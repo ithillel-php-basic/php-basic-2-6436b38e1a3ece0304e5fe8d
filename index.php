@@ -1,5 +1,14 @@
 <?php
-    $task = 'backlog';
+$task = 'backlog';
+$projects = ['Вхідні', 'Навчання', 'Робота', 'Домашні справи', 'Авто'];
+$tasks = [
+    ['Завдання' => 'Співбесіда в ІТ компанії', 'Дата виконання' => '01.07.2023', 'Категорія' => 'Робота', 'Статус' => 'backlog'],
+    ['Завдання' => 'Виконати тестове завдання', 'Дата виконання' => '25.07.2023', 'Категорія' => 'Робота', 'Статус' => 'backlog'],
+    ['Завдання' => 'Зробити завдання до першого уроку', 'Дата виконання' => '27.04.2023', 'Категорія' => 'Навчання', 'Статус' => 'done'],
+    ['Завдання' => 'Зустрітись с друзями', 'Дата виконання' => '14.05.2023', 'Категорія' => 'Вхідні', 'Статус' => 'to-do'],
+    ['Завдання' => 'Купити корм для кота', 'Дата виконання' => NULL, 'Категорія' => 'Домашні справи', 'Статус' => 'in-progress'],
+    ['Завдання' => 'Замовити піцу', 'Дата виконання' => NULL, 'Категорія' => 'Домашні справи', 'Статус' => 'to-do'],
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,15 +88,17 @@
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                        with font-awesome or any other icon font library -->
-                    <li class="nav-item">
-                        <a href="index.php" class="nav-link active">
-                            <i class="nav-icon fas fa-columns"></i>
-                            <p>
-                                Назва проекту
-                                <span class="badge badge-info right">2</span>
-                            </p>
-                        </a>
-                    </li>
+                    <?php foreach ($projects as $project_name): ?>
+                        <li class="nav-item">
+                            <a href="index.php" class="nav-link">
+                                <i class="nav-icon fas fa-columns"></i>
+                                <p>
+                                    <?= $project_name ?>
+                                    <span class="badge badge-info right">2</span>
+                                </p>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
                     <li class="nav-item">
                         <a href="index.php" class="nav-link bg-olive">
                             <i class="nav-icon fas fa-plus"></i>
@@ -141,29 +152,33 @@
                         </h3>
                     </div>
                     <div class="card-body connectedSortable" data-status="backlog">
-                        <?php if($task === 'backlog'): ?>
-                            <div class="card card-info card-outline" data-task-id="1">
-                                <div class="card-header">
-                                    <h5 class="card-title">Зробити головну</h5>
-                                    <div class="card-tools">
-                                        <a href="#" class="btn btn-tool btn-link">#3</a>
+                        <?php foreach ($tasks as $key => $value): ?>
+                            <?php if($value['Статус'] === 'backlog'): ?>
+                                <div class="card card-info card-outline" data-task-id="1">
+                                    <div class="card-header">
+                                        <h5 class="card-title"><?= $value['Завдання'] ?></h5>
+                                        <div class="card-tools">
+                                            <a href="#" class="btn btn-tool btn-link">#3</a>
+                                            <a href="#" class="btn btn-tool">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <!--<p>
+                                            Зробити головну сторінку списку задач з можливістю перегляду,
+                                            створення, редагування, видалення задач.
+                                        </p>-->
                                         <a href="#" class="btn btn-tool">
-                                            <i class="fas fa-pen"></i>
+                                            <i class="fas fa-file"></i>
                                         </a>
+                                        <?php if($value['Дата виконання'] != NULL): ?>
+                                            <small class="badge badge-danger"><i class="far fa-clock"></i> <?= $value['Дата виконання'] ?></small>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <p>
-                                        Зробити головну сторінку списку задач з можливістю перегляду,
-                                        створення, редагування, видалення задач.
-                                    </p>
-                                    <a href="#" class="btn btn-tool">
-                                        <i class="fas fa-file"></i>
-                                    </a>
-                                    <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small>
-                                </div>
-                            </div>
-                        <?php endif; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="card card-row card-primary">
@@ -173,7 +188,33 @@
                         </h3>
                     </div>
                     <div class="card-body connectedSortable" data-status="to-do">
-
+                        <?php foreach ($tasks as $key => $value): ?>
+                            <?php if($value['Статус'] === 'to-do'): ?>
+                                <div class="card card-info card-outline" data-task-id="1">
+                                    <div class="card-header">
+                                        <h5 class="card-title"><?= $value['Завдання'] ?></h5>
+                                        <div class="card-tools">
+                                            <a href="#" class="btn btn-tool btn-link">#3</a>
+                                            <a href="#" class="btn btn-tool">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <!--<p>
+                                            Зробити головну сторінку списку задач з можливістю перегляду,
+                                            створення, редагування, видалення задач.
+                                        </p>-->
+                                        <a href="#" class="btn btn-tool">
+                                            <i class="fas fa-file"></i>
+                                        </a>
+                                        <?php if($value['Дата виконання'] != NULL): ?>
+                                            <small class="badge badge-danger"><i class="far fa-clock"></i> <?= $value['Дата виконання'] ?></small>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="card card-row card-default">
@@ -183,6 +224,33 @@
                         </h3>
                     </div>
                     <div class="card-body connectedSortable" data-status="in-progress">
+                        <?php foreach ($tasks as $key => $value): ?>
+                            <?php if($value['Статус'] === 'in-progress'): ?>
+                                <div class="card card-info card-outline" data-task-id="1">
+                                    <div class="card-header">
+                                        <h5 class="card-title"><?= $value['Завдання'] ?></h5>
+                                        <div class="card-tools">
+                                            <a href="#" class="btn btn-tool btn-link">#3</a>
+                                            <a href="#" class="btn btn-tool">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <!--<p>
+                                            Зробити головну сторінку списку задач з можливістю перегляду,
+                                            створення, редагування, видалення задач.
+                                        </p>-->
+                                        <a href="#" class="btn btn-tool">
+                                            <i class="fas fa-file"></i>
+                                        </a>
+                                        <?php if($value['Дата виконання'] != NULL): ?>
+                                            <small class="badge badge-danger"><i class="far fa-clock"></i> <?= $value['Дата виконання'] ?></small>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="card card-row card-success">
@@ -192,6 +260,33 @@
                         </h3>
                     </div>
                     <div class="card-body connectedSortable" data-status="done">
+                        <?php foreach ($tasks as $key => $value): ?>
+                            <?php if($value['Статус'] === 'done'): ?>
+                                <div class="card card-info card-outline" data-task-id="1">
+                                    <div class="card-header">
+                                        <h5 class="card-title"><?= $value['Завдання'] ?></h5>
+                                        <div class="card-tools">
+                                            <a href="#" class="btn btn-tool btn-link">#3</a>
+                                            <a href="#" class="btn btn-tool">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <!--<p>
+                                            Зробити головну сторінку списку задач з можливістю перегляду,
+                                            створення, редагування, видалення задач.
+                                        </p>-->
+                                        <a href="#" class="btn btn-tool">
+                                            <i class="fas fa-file"></i>
+                                        </a>
+                                        <?php if($value['Дата виконання'] != NULL): ?>
+                                            <small class="badge badge-danger"><i class="far fa-clock"></i> <?= $value['Дата виконання'] ?></small>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
