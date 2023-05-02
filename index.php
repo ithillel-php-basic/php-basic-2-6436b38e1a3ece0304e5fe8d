@@ -9,6 +9,19 @@ $tasks = [
     ['Завдання' => 'Купити корм для кота', 'Дата виконання' => NULL, 'Категорія' => 'Домашні справи', 'Статус' => 'in-progress'],
     ['Завдання' => 'Замовити піцу', 'Дата виконання' => NULL, 'Категорія' => 'Домашні справи', 'Статус' => 'to-do'],
 ];
+
+function project_count($all_tasks, $project): int {
+    $var = [];
+
+    foreach ($all_tasks as $key => $value) {
+        if ($project == $value['Категорія']) {
+            $var[] = $value['Категорія'];
+        }
+    }
+
+    return count($var);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,7 +107,7 @@ $tasks = [
                                 <i class="nav-icon fas fa-columns"></i>
                                 <p>
                                     <?= $project_name ?>
-                                    <span class="badge badge-info right">2</span>
+                                    <span class="badge badge-info right"><?= project_count($tasks, $project_name) ?></span>
                                 </p>
                             </a>
                         </li>
