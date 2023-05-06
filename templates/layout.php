@@ -22,11 +22,7 @@
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-    <?= renderTemplate($body_content, [
-        'wrapper_content' => 'kanban.php',
-        'user_name' => 'Daniil Ivanov',
-        'user_photo' => 'https://en.gravatar.com/userimage/113651460/9f8c526466d42444c8a4d8d0b9bf1990.jpg?size=200'
-    ]); ?>
+    <?= $body_content ?>
 
 <!-- jQuery -->
 <script src="static/plugins/jquery/jquery.min.js"></script>

@@ -40,7 +40,7 @@
                         <?php if ($value['Статус'] === 'backlog'): ?>
                             <div class="card card-info card-outline" data-task-id="1">
                                 <div class="card-header">
-                                    <h5 class="card-title"><?= $value['Завдання'] ?></h5>
+                                    <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
                                     <div class="card-tools">
                                         <a href="#" class="btn btn-tool btn-link">#3</a>
                                         <a href="#" class="btn btn-tool">
@@ -58,7 +58,7 @@
                                     </a>
                                     <?php if (!is_null($value['Дата виконання'])): ?>
                                         <small class="badge badge-danger"><i
-                                                class="far fa-clock"></i> <?= $value['Дата виконання'] ?></small>
+                                                class="far fa-clock"></i> <?= htmlspecialchars($value['Дата виконання']) ?></small>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                         <?php if ($value['Статус'] === 'to-do'): ?>
                             <div class="card card-info card-outline" data-task-id="1">
                                 <div class="card-header">
-                                    <h5 class="card-title"><?= $value['Завдання'] ?></h5>
+                                    <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
                                     <div class="card-tools">
                                         <a href="#" class="btn btn-tool btn-link">#3</a>
                                         <a href="#" class="btn btn-tool">
@@ -95,7 +95,7 @@
                                     </a>
                                     <?php if (!is_null($value['Дата виконання'])): ?>
                                         <small class="badge badge-danger"><i
-                                                class="far fa-clock"></i> <?= $value['Дата виконання'] ?></small>
+                                                class="far fa-clock"></i> <?= htmlspecialchars($value['Дата виконання']) ?></small>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                         <?php if ($value['Статус'] === 'in-progress'): ?>
                             <div class="card card-info card-outline" data-task-id="1">
                                 <div class="card-header">
-                                    <h5 class="card-title"><?= $value['Завдання'] ?></h5>
+                                    <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
                                     <div class="card-tools">
                                         <a href="#" class="btn btn-tool btn-link">#3</a>
                                         <a href="#" class="btn btn-tool">
@@ -132,7 +132,7 @@
                                     </a>
                                     <?php if (!is_null($value['Дата виконання'])): ?>
                                         <small class="badge badge-danger"><i
-                                                class="far fa-clock"></i> <?= $value['Дата виконання'] ?></small>
+                                                class="far fa-clock"></i> <?= htmlspecialchars($value['Дата виконання']) ?></small>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -151,7 +151,7 @@
                         <?php if ($value['Статус'] === 'done'): ?>
                             <div class="card card-info card-outline" data-task-id="1">
                                 <div class="card-header">
-                                    <h5 class="card-title"><?= $value['Завдання'] ?></h5>
+                                    <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
                                     <div class="card-tools">
                                         <a href="#" class="btn btn-tool btn-link">#3</a>
                                         <a href="#" class="btn btn-tool">
@@ -169,7 +169,7 @@
                                     </a>
                                     <?php if (!is_null($value['Дата виконання'])): ?>
                                         <small class="badge badge-danger"><i
-                                                class="far fa-clock"></i> <?= $value['Дата виконання'] ?></small>
+                                                class="far fa-clock"></i> <?= htmlspecialchars($value['Дата виконання']) ?></small>
                                     <?php endif; ?>
                                 </div>
                             </div>
