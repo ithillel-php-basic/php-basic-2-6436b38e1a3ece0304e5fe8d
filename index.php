@@ -42,7 +42,7 @@ function task_timer(string $task_date): string {
 
     if (validate_date($task_date)) {
         if (($hours <= 24)) {
-            return "<small class=\"badge badge-danger\"><i class=\"far fa-clock\"></i> " . htmlspecialchars($task_date . " (" . floor($hours) . " год.)") . "</small>";
+            return "<small class=\"badge badge-danger\"><i class=\"far fa-clock\"></i> " . htmlspecialchars($task_date . " (" . max(floor($hours), 0) . " год.)") . "</small>";
         } else {
             return "<small class=\"badge badge-success\"><i class=\"far fa-clock\"></i> " . htmlspecialchars($task_date . " (" . floor($hours / 24) . " д.)") . "</small>";
         }
