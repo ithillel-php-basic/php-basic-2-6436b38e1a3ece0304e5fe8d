@@ -52,7 +52,9 @@
                                     <a href="#" class="btn btn-tool">
                                         <i class="fas fa-file"></i>
                                     </a>
-                                    <?= task_timer($value['Дата виконання']) ?>
+                                    <?php if (!empty($value['Дата виконання'])): ?>
+                                        <?= task_timer($value['Дата виконання']) ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -82,7 +84,9 @@
                                     <a href="#" class="btn btn-tool">
                                         <i class="fas fa-file"></i>
                                     </a>
-                                    <?= task_timer($value['Дата виконання']) ?>
+                                    <?php if (!empty($value['Дата виконання'])): ?>
+                                        <?= task_timer($value['Дата виконання']) ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -112,7 +116,9 @@
                                     <a href="#" class="btn btn-tool">
                                         <i class="fas fa-file"></i>
                                     </a>
-                                    <?= task_timer($value['Дата виконання']) ?>
+                                    <?php if (!empty($value['Дата виконання'])): ?>
+                                        <?= task_timer($value['Дата виконання']) ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -142,7 +148,9 @@
                                     <a href="#" class="btn btn-tool">
                                         <i class="fas fa-file"></i>
                                     </a>
-                                    <?= task_timer($value['Дата виконання']) ?>
+                                    <?php if (!empty($value['Дата виконання'])): ?>
+                                        <?= task_timer($value['Дата виконання']) ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         <?php endif; ?>
