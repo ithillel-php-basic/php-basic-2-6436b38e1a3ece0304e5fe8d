@@ -38,27 +38,22 @@
                 <div class="card-body connectedSortable" data-status="backlog">
                     <?php foreach ($tasks as $key => $value): ?>
                         <?php if ($value['Статус'] === 'backlog'): ?>
-                            <div class="card card-info card-outline" data-task-id="1">
+                            <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
                                 <div class="card-header">
                                     <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
                                     <div class="card-tools">
-                                        <a href="#" class="btn btn-tool btn-link">#3</a>
+                                        <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
                                         <a href="#" class="btn btn-tool">
                                             <i class="fas fa-pen"></i>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <!--<p>
-                                        Зробити головну сторінку списку задач з можливістю перегляду,
-                                        створення, редагування, видалення задач.
-                                    </p>-->
                                     <a href="#" class="btn btn-tool">
                                         <i class="fas fa-file"></i>
                                     </a>
-                                    <?php if (!is_null($value['Дата виконання'])): ?>
-                                        <small class="badge badge-danger"><i
-                                                class="far fa-clock"></i> <?= htmlspecialchars($value['Дата виконання']) ?></small>
+                                    <?php if (!empty($value['Дата виконання'])): ?>
+                                        <?= task_timer($value['Дата виконання']) ?>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -75,27 +70,22 @@
                 <div class="card-body connectedSortable" data-status="to-do">
                     <?php foreach ($tasks as $key => $value): ?>
                         <?php if ($value['Статус'] === 'to-do'): ?>
-                            <div class="card card-info card-outline" data-task-id="1">
+                            <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
                                 <div class="card-header">
                                     <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
                                     <div class="card-tools">
-                                        <a href="#" class="btn btn-tool btn-link">#3</a>
+                                        <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
                                         <a href="#" class="btn btn-tool">
                                             <i class="fas fa-pen"></i>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <!--<p>
-                                        Зробити головну сторінку списку задач з можливістю перегляду,
-                                        створення, редагування, видалення задач.
-                                    </p>-->
                                     <a href="#" class="btn btn-tool">
                                         <i class="fas fa-file"></i>
                                     </a>
-                                    <?php if (!is_null($value['Дата виконання'])): ?>
-                                        <small class="badge badge-danger"><i
-                                                class="far fa-clock"></i> <?= htmlspecialchars($value['Дата виконання']) ?></small>
+                                    <?php if (!empty($value['Дата виконання'])): ?>
+                                        <?= task_timer($value['Дата виконання']) ?>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -112,27 +102,22 @@
                 <div class="card-body connectedSortable" data-status="in-progress">
                     <?php foreach ($tasks as $key => $value): ?>
                         <?php if ($value['Статус'] === 'in-progress'): ?>
-                            <div class="card card-info card-outline" data-task-id="1">
+                            <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
                                 <div class="card-header">
                                     <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
                                     <div class="card-tools">
-                                        <a href="#" class="btn btn-tool btn-link">#3</a>
+                                        <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
                                         <a href="#" class="btn btn-tool">
                                             <i class="fas fa-pen"></i>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <!--<p>
-                                        Зробити головну сторінку списку задач з можливістю перегляду,
-                                        створення, редагування, видалення задач.
-                                    </p>-->
                                     <a href="#" class="btn btn-tool">
                                         <i class="fas fa-file"></i>
                                     </a>
-                                    <?php if (!is_null($value['Дата виконання'])): ?>
-                                        <small class="badge badge-danger"><i
-                                                class="far fa-clock"></i> <?= htmlspecialchars($value['Дата виконання']) ?></small>
+                                    <?php if (!empty($value['Дата виконання'])): ?>
+                                        <?= task_timer($value['Дата виконання']) ?>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -149,27 +134,22 @@
                 <div class="card-body connectedSortable" data-status="done">
                     <?php foreach ($tasks as $key => $value): ?>
                         <?php if ($value['Статус'] === 'done'): ?>
-                            <div class="card card-info card-outline" data-task-id="1">
+                            <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
                                 <div class="card-header">
                                     <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
                                     <div class="card-tools">
-                                        <a href="#" class="btn btn-tool btn-link">#3</a>
+                                        <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
                                         <a href="#" class="btn btn-tool">
                                             <i class="fas fa-pen"></i>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <!--<p>
-                                        Зробити головну сторінку списку задач з можливістю перегляду,
-                                        створення, редагування, видалення задач.
-                                    </p>-->
                                     <a href="#" class="btn btn-tool">
                                         <i class="fas fa-file"></i>
                                     </a>
-                                    <?php if (!is_null($value['Дата виконання'])): ?>
-                                        <small class="badge badge-danger"><i
-                                                class="far fa-clock"></i> <?= htmlspecialchars($value['Дата виконання']) ?></small>
+                                    <?php if (!empty($value['Дата виконання'])): ?>
+                                        <?= task_timer($value['Дата виконання']) ?>
                                     <?php endif; ?>
                                 </div>
                             </div>
