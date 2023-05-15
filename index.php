@@ -1,29 +1,33 @@
 <?php
 
+const USERNAME = 'Daniil Ivanov';
+
 require 'helpers.php';
 
-/** @var TYPE_NAME $projects */
-$projects = ['Вхідні', 'Навчання', 'Робота', 'Домашні справи', 'Авто'];
-/** @var TYPE_NAME $tasks */
-$tasks = [
-    ['Завдання' => 'Співбесіда в ІТ компанії', 'Дата виконання' => '01.07.2023', 'Категорія' => 'Робота', 'Статус' => 'backlog'],
-    ['Завдання' => 'Виконати тестове завдання', 'Дата виконання' => '25.07.2023', 'Категорія' => 'Робота', 'Статус' => 'backlog'],
-    ['Завдання' => 'Зробити завдання до першого уроку', 'Дата виконання' => '27.04.2023', 'Категорія' => 'Навчання', 'Статус' => 'done'],
-    ['Завдання' => 'Зустрітись с друзями', 'Дата виконання' => '', 'Категорія' => 'Вхідні', 'Статус' => 'to-do'],
-    ['Завдання' => 'Купити корм для кота', 'Дата виконання' => '11.05.2023', 'Категорія' => 'Домашні справи', 'Статус' => 'in-progress'],
-    ['Завдання' => 'Замовити піцу', 'Дата виконання' => NULL, 'Категорія' => 'Домашні справи', 'Статус' => 'to-do'],
-];
+mysqli_report(MYSQLI_REPORT_OFF);
+
+$db = mysqli_connect('sql380.your-server.de', 'hillel', 'E1gQxarBwbpkdzgy', 'hillel_php_basic_daniil_ivanov');
+if (!$db) {
+    die('Field to connect to DB');
+}
+mysqli_set_charset($db, 'utf8mb4');
+
+$projects_query = mysqli_query($db, sprintf("SELECT p.*, u.username FROM projects AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE u.username = '%s'", USERNAME));
+$projects = $projects_query ? mysqli_fetch_all($projects_query, MYSQLI_ASSOC) : false;
+
+$task_query = mysqli_query($db, sprintf("SELECT t.*, u.username FROM tasks AS t LEFT JOIN users AS u ON t.user_id = u.id WHERE u.username = '%s'", USERNAME));
+$tasks = $task_query ? mysqli_fetch_all($task_query, MYSQLI_ASSOC) : false;
 
 /**
  * @param $all_tasks
  * @param $project
  * @return int
  */
-function project_count($all_tasks, $project): int {
+function project_count($all_tasks, $project_id): int {
     $count = 0;
 
     foreach ($all_tasks as $key => $value) {
-        if ($project == $value['Категорія']) {
+        if ($value['project_id'] === $project_id) {
             $count++;
         }
     }
@@ -56,7 +60,7 @@ function task_timer(string $task_date): string {
  * @param $format
  * @return bool
  */
-function validate_date($date, $format = 'd.m.Y'): bool {
+function validate_date($date, $format = 'Y-m-d'): bool {
     $d = DateTime::createFromFormat($format, $date);
     return $d && $d->format($format) === $date;
 }
@@ -67,7 +71,7 @@ $kanban_template = renderTemplate('kanban.php', ['tasks' => $tasks]);
 /** @var TYPE_NAME $main_template */
 $main_template = renderTemplate('main.php', [
     'wrapper_content' => $kanban_template,
-    'user_name' => 'Daniil Ivanov',
+    'user_name' => USERNAME,
     'user_photo' => 'https://en.gravatar.com/userimage/113651460/9f8c526466d42444c8a4d8d0b9bf1990.jpg?size=200',
     'projects' => $projects,
     'tasks' => $tasks

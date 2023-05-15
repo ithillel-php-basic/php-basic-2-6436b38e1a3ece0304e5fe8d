@@ -19,12 +19,9 @@ VALUES
     (1, 3, 1, 'Співбесіда в ІТ компанії', NULL, '2023-07-01', 'backlog', NULL),
     (2, 3, 1, 'Виконати тестове завдання', NULL, '2023-07-23', 'backlog', NULL),
     (3, 2, 1, 'Зробити завдання до першого уроку', NULL, '2023-04-27', 'done', NULL),
-    (4, 3, 1, 'Співбесіда в ІТ компанії', NULL, '2023-07-01', 'backlog', NULL),
-    (5, 3, 1, 'Виконати тестове завдання', NULL, '2023-07-23', 'backlog', NULL),
-    (6, 2, 1, 'Зробити завдання до першого уроку', NULL, '2023-04-27', 'done', NULL),
-    (7, 1, 1, 'Зустрітись с друзями', NULL, NULL, 'to-do', NULL),
-    (8, 4, 1, 'Купити корм для кота', NULL, '2023-05-11', 'in-progress', NULL),
-    (9, 4, 1, 'Замовити піцу', NULL, NULL, 'to-do', NULL);
+    (4, 1, 1, 'Зустрітись с друзями', NULL, NULL, 'to-do', NULL),
+    (5, 4, 1, 'Купити корм для кота', NULL, '2023-05-11', 'in-progress', NULL),
+    (6, 4, 1, 'Замовити піцу', NULL, NULL, 'to-do', NULL);
 
 -- Selecting all data from projects where username = Daniil Ivanov
 SELECT p.*, u.username FROM projects AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE u.username = 'Daniil Ivanov';

@@ -1,4 +1,3 @@
-<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper kanban">
     <section class="content-header">
         <div class="container-fluid">
@@ -36,29 +35,31 @@
                     </h3>
                 </div>
                 <div class="card-body connectedSortable" data-status="backlog">
-                    <?php foreach ($tasks as $key => $value): ?>
-                        <?php if ($value['Статус'] === 'backlog'): ?>
-                            <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
-                                <div class="card-header">
-                                    <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
-                                    <div class="card-tools">
-                                        <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
-                                        <a href="#" class="btn btn-tool">
-                                            <i class="fas fa-pen"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="card-body">
+                    <?php if ($tasks): ?>
+                        <?php foreach ($tasks as $key => $value): ?>
+                        <?php if ($value['status'] === 'backlog'): ?>
+                        <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
+                            <div class="card-header">
+                                <h5 class="card-title"><?= htmlspecialchars($value['name']) ?></h5>
+                                <div class="card-tools">
+                                    <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
                                     <a href="#" class="btn btn-tool">
-                                        <i class="fas fa-file"></i>
+                                        <i class="fas fa-pen"></i>
                                     </a>
-                                    <?php if (!empty($value['Дата виконання'])): ?>
-                                        <?= task_timer($value['Дата виконання']) ?>
-                                    <?php endif; ?>
                                 </div>
                             </div>
+                            <div class="card-body">
+                                <a href="#" class="btn btn-tool">
+                                    <i class="fas fa-file"></i>
+                                </a>
+                                <?php if (!empty($value['deadline'])): ?>
+                                    <?= task_timer($value['deadline']) ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
                         <?php endif; ?>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="card card-row card-primary">
@@ -68,29 +69,31 @@
                     </h3>
                 </div>
                 <div class="card-body connectedSortable" data-status="to-do">
-                    <?php foreach ($tasks as $key => $value): ?>
-                        <?php if ($value['Статус'] === 'to-do'): ?>
-                            <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
-                                <div class="card-header">
-                                    <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
-                                    <div class="card-tools">
-                                        <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
+                    <?php if ($tasks): ?>
+                        <?php foreach ($tasks as $key => $value): ?>
+                            <?php if ($value['status'] === 'to-do'): ?>
+                                <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
+                                    <div class="card-header">
+                                        <h5 class="card-title"><?= htmlspecialchars($value['name']) ?></h5>
+                                        <div class="card-tools">
+                                            <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
+                                            <a href="#" class="btn btn-tool">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
                                         <a href="#" class="btn btn-tool">
-                                            <i class="fas fa-pen"></i>
+                                            <i class="fas fa-file"></i>
                                         </a>
+                                        <?php if (!empty($value['deadline'])): ?>
+                                            <?= task_timer($value['deadline']) ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <a href="#" class="btn btn-tool">
-                                        <i class="fas fa-file"></i>
-                                    </a>
-                                    <?php if (!empty($value['Дата виконання'])): ?>
-                                        <?= task_timer($value['Дата виконання']) ?>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="card card-row card-default">
@@ -100,29 +103,31 @@
                     </h3>
                 </div>
                 <div class="card-body connectedSortable" data-status="in-progress">
-                    <?php foreach ($tasks as $key => $value): ?>
-                        <?php if ($value['Статус'] === 'in-progress'): ?>
-                            <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
-                                <div class="card-header">
-                                    <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
-                                    <div class="card-tools">
-                                        <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
+                    <?php if ($tasks): ?>
+                        <?php foreach ($tasks as $key => $value): ?>
+                            <?php if ($value['status'] === 'in-progress'): ?>
+                                <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
+                                    <div class="card-header">
+                                        <h5 class="card-title"><?= htmlspecialchars($value['name']) ?></h5>
+                                        <div class="card-tools">
+                                            <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
+                                            <a href="#" class="btn btn-tool">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
                                         <a href="#" class="btn btn-tool">
-                                            <i class="fas fa-pen"></i>
+                                            <i class="fas fa-file"></i>
                                         </a>
+                                        <?php if (!empty($value['deadline'])): ?>
+                                            <?= task_timer($value['deadline']) ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <a href="#" class="btn btn-tool">
-                                        <i class="fas fa-file"></i>
-                                    </a>
-                                    <?php if (!empty($value['Дата виконання'])): ?>
-                                        <?= task_timer($value['Дата виконання']) ?>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="card card-row card-success">
@@ -132,29 +137,31 @@
                     </h3>
                 </div>
                 <div class="card-body connectedSortable" data-status="done">
-                    <?php foreach ($tasks as $key => $value): ?>
-                        <?php if ($value['Статус'] === 'done'): ?>
-                            <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
-                                <div class="card-header">
-                                    <h5 class="card-title"><?= htmlspecialchars($value['Завдання']) ?></h5>
-                                    <div class="card-tools">
-                                        <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
+                    <?php if ($tasks): ?>
+                        <?php foreach ($tasks as $key => $value): ?>
+                            <?php if ($value['status'] === 'done'): ?>
+                                <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
+                                    <div class="card-header">
+                                        <h5 class="card-title"><?= htmlspecialchars($value['name']) ?></h5>
+                                        <div class="card-tools">
+                                            <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
+                                            <a href="#" class="btn btn-tool">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
                                         <a href="#" class="btn btn-tool">
-                                            <i class="fas fa-pen"></i>
+                                            <i class="fas fa-file"></i>
                                         </a>
+                                        <?php if (!empty($value['deadline'])): ?>
+                                            <?= task_timer($value['deadline']) ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <a href="#" class="btn btn-tool">
-                                        <i class="fas fa-file"></i>
-                                    </a>
-                                    <?php if (!empty($value['Дата виконання'])): ?>
-                                        <?= task_timer($value['Дата виконання']) ?>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
