@@ -49,6 +49,9 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                                <?php if (!empty($value['description'])): ?>
+                                    <p><?= $value['description'] ?></p>
+                                <?php endif; ?>
                                 <a href="#" class="btn btn-tool">
                                     <i class="fas fa-file"></i>
                                 </a>
@@ -83,6 +86,9 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
+                                        <?php if (!empty($value['description'])): ?>
+                                            <p><?= $value['description'] ?></p>
+                                        <?php endif; ?>
                                         <a href="#" class="btn btn-tool">
                                             <i class="fas fa-file"></i>
                                         </a>
@@ -117,6 +123,9 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
+                                        <?php if (!empty($value['description'])): ?>
+                                            <p><?= $value['description'] ?></p>
+                                        <?php endif; ?>
                                         <a href="#" class="btn btn-tool">
                                             <i class="fas fa-file"></i>
                                         </a>
@@ -151,6 +160,9 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
+                                        <?php if (!empty($value['description'])): ?>
+                                            <p><?= $value['description'] ?></p>
+                                        <?php endif; ?>
                                         <a href="#" class="btn btn-tool">
                                             <i class="fas fa-file"></i>
                                         </a>

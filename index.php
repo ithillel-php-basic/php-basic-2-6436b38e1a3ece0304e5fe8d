@@ -1,21 +1,31 @@
 <?php
 
 const USERNAME = 'Daniil Ivanov';
+const USERID = 1;
 
 require 'helpers.php';
 
-mysqli_report(MYSQLI_REPORT_OFF);
+/**
+ * @return mysqli|false
+ */
+function connect_to_mysql_db(): mysqli|false {
+    mysqli_report(MYSQLI_REPORT_OFF);
 
-$db = mysqli_connect('sql380.your-server.de', 'hillel', 'E1gQxarBwbpkdzgy', 'hillel_php_basic_daniil_ivanov');
-if (!$db) {
-    die('Field to connect to DB');
+    $db = mysqli_connect('sql380.your-server.de', 'hillel', 'E1gQxarBwbpkdzgy', 'hillel_php_basic_daniil_ivanov');
+    if (!$db) {
+        die('Field to connect to DB');
+    }
+    mysqli_set_charset($db, 'utf8mb4');
+
+    return $db;
 }
-mysqli_set_charset($db, 'utf8mb4');
 
-$projects_query = mysqli_query($db, sprintf("SELECT p.*, u.username FROM projects AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE u.username = '%s'", USERNAME));
+$db = connect_to_mysql_db();
+
+$projects_query = mysqli_query($db, sprintf("SELECT p.* FROM projects AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE u.id = '%d'", USERID));
 $projects = $projects_query ? mysqli_fetch_all($projects_query, MYSQLI_ASSOC) : false;
 
-$task_query = mysqli_query($db, sprintf("SELECT t.*, u.username FROM tasks AS t LEFT JOIN users AS u ON t.user_id = u.id WHERE u.username = '%s'", USERNAME));
+$task_query = mysqli_query($db, sprintf("SELECT t.* FROM tasks AS t LEFT JOIN users AS u ON t.user_id = u.id WHERE u.id = '%d'", USERID));
 $tasks = $task_query ? mysqli_fetch_all($task_query, MYSQLI_ASSOC) : false;
 
 /**
@@ -71,7 +81,7 @@ $kanban_template = renderTemplate('kanban.php', ['tasks' => $tasks]);
 /** @var TYPE_NAME $main_template */
 $main_template = renderTemplate('main.php', [
     'wrapper_content' => $kanban_template,
-    'user_name' => USERNAME,
+    'user_name' => USERNAME . ' (ID: ' . USERID . ')',
     'user_photo' => 'https://en.gravatar.com/userimage/113651460/9f8c526466d42444c8a4d8d0b9bf1990.jpg?size=200',
     'projects' => $projects,
     'tasks' => $tasks
