@@ -5,7 +5,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="index.php" class="nav-link">Дошка</a>
+                <a href="/" class="nav-link">Дошка</a>
             </li>
             <li class="nav-item bg-primary d-none d-sm-inline-block">
                 <a href="index.php" class="nav-link">Створити задачу</a>
@@ -38,15 +38,24 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link<?= (!isset($_GET['project']) ? ' active' : '') ?>">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>
+                                Всі проекти
+                                <?= !is_array($projects) ? '' : '<span class="badge badge-danger right">' . count($projects) . '</span>' ?>
+                            </p>
+                        </a>
+                    </li>
                     <?php if ($projects): ?>
-                        <?php foreach ($projects as $kay => $value): ?>
+                        <?php foreach ($projects as $key => $value): ?>
                             <li class="nav-item">
-                                <a href="index.php" class="nav-link">
+                                <a href="/?project=<?= urlencode($value['id']) ?>" class="nav-link<?= ((isset($_GET['project']) AND ($_GET['project'] === $value['id'])) ? ' active' : '') ?>">
                                     <i class="nav-icon fas fa-columns"></i>
                                     <p>
                                         <?= htmlspecialchars($value['name']) ?>
                                         <span
-                                            class="badge badge-info right"><?= project_count($tasks, $value['id']) ?></span>
+                                            class="badge badge-info right"><?= htmlspecialchars($value['tcount']) ?></span>
                                     </p>
                                 </a>
                             </li>
@@ -69,7 +78,7 @@
 
     <footer class="main-footer">
         <div class="float-right d-none d-sm-block">
-            <b>Version</b> 0.1.6
+            <b>Version</b> 0.1.10
         </div>
         <strong>Copyright &copy; 2023 <a href="https://ithillel.ua/">Комп'ютерна школа Hillel</a>.</strong> All rights
         reserved.
