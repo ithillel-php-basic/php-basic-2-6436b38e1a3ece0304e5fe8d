@@ -22,28 +22,17 @@ function connect_to_mysql_db(): mysqli|false {
 
 $db = connect_to_mysql_db();
 
-$projects_query = mysqli_query($db, sprintf("SELECT p.* FROM projects AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE u.id = '%d'", USERID));
+$projects_query = mysqli_query($db, sprintf("SELECT p.*, COUNT(t.id) AS tcount FROM projects AS p LEFT JOIN tasks AS t ON p.id = t.project_id WHERE p.user_id = '%d' GROUP BY p.id;", USERID));
 $projects = $projects_query ? mysqli_fetch_all($projects_query, MYSQLI_ASSOC) : false;
+$project_name = '';
 
-$task_query = mysqli_query($db, sprintf("SELECT t.* FROM tasks AS t LEFT JOIN users AS u ON t.user_id = u.id WHERE u.id = '%d'", USERID));
-$tasks = $task_query ? mysqli_fetch_all($task_query, MYSQLI_ASSOC) : false;
-
-/**
- * @param $all_tasks
- * @param $project
- * @return int
- */
-function project_count($all_tasks, $project_id): int {
-    $count = 0;
-
-    foreach ($all_tasks as $key => $value) {
-        if ($value['project_id'] === $project_id) {
-            $count++;
-        }
-    }
-
-    return $count;
+if (!isset($_GET['project'])) {
+    $task_query = mysqli_query($db, sprintf("SELECT * FROM tasks WHERE user_id = '%d'", USERID));
+} else {
+    $task_query = mysqli_query($db, sprintf("SELECT * FROM tasks WHERE user_id = '%d' AND project_id = '%u'", USERID, $_GET['project']));
+    $project_name = mysqli_fetch_row(mysqli_query($db, sprintf("SELECT name FROM projects WHERE id = '%d'", $_GET['project'])));
 }
+$tasks = $task_query ? mysqli_fetch_all($task_query, MYSQLI_ASSOC) : false;
 
 /**
  * @param int $time
@@ -76,7 +65,7 @@ function validate_date($date, $format = 'Y-m-d'): bool {
 }
 
 /** @var TYPE_NAME $kanban_template */
-$kanban_template = renderTemplate('kanban.php', ['tasks' => $tasks]);
+$kanban_template = renderTemplate('kanban.php', ['tasks' => $tasks, 'project_title' => $project_name]);
 
 /** @var TYPE_NAME $main_template */
 $main_template = renderTemplate('main.php', [
