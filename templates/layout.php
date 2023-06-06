@@ -14,11 +14,12 @@
     <link rel="stylesheet" href="static/plugins/ekko-lightbox/ekko-lightbox.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="static/css/adminlte.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="static/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- custom kanban styles -->
-    <link rel="stylesheet" href="static/css/kanban.css">
 
+    <?php if ($style['css']): ?>
+        <?php foreach ($style['css'] as $key => $value): ?>
+            <?= $value ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

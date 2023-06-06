@@ -1,13 +1,29 @@
 <div class="content-wrapper kanban">
     <section class="content-header">
+        <?php if (isset($_COOKIE['error-action']) AND array_key_exists('error-action', $_COOKIE)): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Помилка!</strong> <?= $_COOKIE['error-action'] ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
+        <?php if (isset($_COOKIE['success-action']) AND array_key_exists('success-action', $_COOKIE)): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Успіх!</strong> <?= $_COOKIE['success-action'] ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h1><?= (!is_null($project_title) ? $project_title !== '' ? $project_title[0] : 'Всі проекти' : '') ?></h1>
+                    <h1><?= $project_title ?></h1>
                 </div>
                 <div class="col-sm-6 d-none d-sm-block">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active"><?= (!is_null($project_title) ? $project_title !== '' ? '<a href="/">Всі проекти</a> / ' . $project_title[0] : '' : '') ?></li>
+                        <li class="breadcrumb-item active"><?= $breadcrumb ?></li>
                     </ol>
                 </div>
             </div>
@@ -39,11 +55,11 @@
                     <div class="card-body connectedSortable" data-status="backlog">
                         <?php foreach ($tasks as $key => $value): ?>
                             <?php if ($value['status'] === 'backlog'): ?>
-                                <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
+                                <div class="card card-info card-outline" data-task-id="<?= htmlspecialchars($value['id']) ?>">
                                     <div class="card-header">
                                         <h5 class="card-title"><?= htmlspecialchars($value['name']) ?></h5>
                                         <div class="card-tools">
-                                            <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
+                                            <a href="#" class="btn btn-tool btn-link">#<?= htmlspecialchars($value['id']) ?></a>
                                             <a href="#" class="btn btn-tool">
                                                 <i class="fas fa-pen"></i>
                                             </a>
@@ -53,9 +69,11 @@
                                         <?php if (!empty($value['description'])): ?>
                                             <p><?= $value['description'] ?></p>
                                         <?php endif; ?>
-                                        <a href="#" class="btn btn-tool">
-                                            <i class="fas fa-file"></i>
-                                        </a>
+                                        <?php if (!empty($value['file'])): ?>
+                                            <a href="/storage/tasks-files/<?= $value['file'] ?>" target="_blank" class="btn btn-tool">
+                                                <i class="fas fa-file"></i>
+                                            </a>
+                                        <?php endif; ?>
                                         <?php if (!empty($value['deadline'])): ?>
                                             <?= task_timer($value['deadline']) ?>
                                         <?php endif; ?>
@@ -74,11 +92,11 @@
                     <div class="card-body connectedSortable" data-status="to-do">
                         <?php foreach ($tasks as $key => $value): ?>
                             <?php if ($value['status'] === 'to-do'): ?>
-                                <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
+                                <div class="card card-info card-outline" data-task-id="<?= htmlspecialchars($value['id']) ?>">
                                     <div class="card-header">
                                         <h5 class="card-title"><?= htmlspecialchars($value['name']) ?></h5>
                                         <div class="card-tools">
-                                            <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
+                                            <a href="#" class="btn btn-tool btn-link">#<?= htmlspecialchars($value['id']) ?></a>
                                             <a href="#" class="btn btn-tool">
                                                 <i class="fas fa-pen"></i>
                                             </a>
@@ -88,9 +106,11 @@
                                         <?php if (!empty($value['description'])): ?>
                                             <p><?= $value['description'] ?></p>
                                         <?php endif; ?>
-                                        <a href="#" class="btn btn-tool">
-                                            <i class="fas fa-file"></i>
-                                        </a>
+                                        <?php if (!empty($value['file'])): ?>
+                                            <a href="/storage/tasks-files/<?= $value['file'] ?>" target="_blank" class="btn btn-tool">
+                                                <i class="fas fa-file"></i>
+                                            </a>
+                                        <?php endif; ?>
                                         <?php if (!empty($value['deadline'])): ?>
                                             <?= task_timer($value['deadline']) ?>
                                         <?php endif; ?>
@@ -109,11 +129,11 @@
                     <div class="card-body connectedSortable" data-status="in-progress">
                         <?php foreach ($tasks as $key => $value): ?>
                             <?php if ($value['status'] === 'in-progress'): ?>
-                                <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
+                                <div class="card card-info card-outline" data-task-id="<?= htmlspecialchars($value['id']) ?>">
                                     <div class="card-header">
                                         <h5 class="card-title"><?= htmlspecialchars($value['name']) ?></h5>
                                         <div class="card-tools">
-                                            <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
+                                            <a href="#" class="btn btn-tool btn-link">#<?= htmlspecialchars($value['id']) ?></a>
                                             <a href="#" class="btn btn-tool">
                                                 <i class="fas fa-pen"></i>
                                             </a>
@@ -123,9 +143,11 @@
                                         <?php if (!empty($value['description'])): ?>
                                             <p><?= $value['description'] ?></p>
                                         <?php endif; ?>
-                                        <a href="#" class="btn btn-tool">
-                                            <i class="fas fa-file"></i>
-                                        </a>
+                                        <?php if (!empty($value['file'])): ?>
+                                            <a href="/storage/tasks-files/<?= $value['file'] ?>" target="_blank" class="btn btn-tool">
+                                                <i class="fas fa-file"></i>
+                                            </a>
+                                        <?php endif; ?>
                                         <?php if (!empty($value['deadline'])): ?>
                                             <?= task_timer($value['deadline']) ?>
                                         <?php endif; ?>
@@ -144,11 +166,11 @@
                     <div class="card-body connectedSortable" data-status="done">
                         <?php foreach ($tasks as $key => $value): ?>
                             <?php if ($value['status'] === 'done'): ?>
-                                <div class="card card-info card-outline" data-task-id="<?= $key++ ?>">
+                                <div class="card card-info card-outline" data-task-id="<?= htmlspecialchars($value['id']) ?>">
                                     <div class="card-header">
                                         <h5 class="card-title"><?= htmlspecialchars($value['name']) ?></h5>
                                         <div class="card-tools">
-                                            <a href="#" class="btn btn-tool btn-link">#<?= $key++ ?></a>
+                                            <a href="#" class="btn btn-tool btn-link">#<?= htmlspecialchars($value['id']) ?></a>
                                             <a href="#" class="btn btn-tool">
                                                 <i class="fas fa-pen"></i>
                                             </a>
@@ -158,9 +180,11 @@
                                         <?php if (!empty($value['description'])): ?>
                                             <p><?= $value['description'] ?></p>
                                         <?php endif; ?>
-                                        <a href="#" class="btn btn-tool">
-                                            <i class="fas fa-file"></i>
-                                        </a>
+                                        <?php if (!empty($value['file'])): ?>
+                                            <a href="/storage/tasks-files/<?= $value['file'] ?>" target="_blank" class="btn btn-tool">
+                                                <i class="fas fa-file"></i>
+                                            </a>
+                                        <?php endif; ?>
                                         <?php if (!empty($value['deadline'])): ?>
                                             <?= task_timer($value['deadline']) ?>
                                         <?php endif; ?>
