@@ -8,7 +8,7 @@
                 <a href="/" class="nav-link">Дошка</a>
             </li>
             <li class="nav-item bg-primary d-none d-sm-inline-block">
-                <a href="index.php" class="nav-link">Створити задачу</a>
+                <a href="/add-task.php" class="nav-link">Створити задачу</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -78,7 +78,7 @@
 
     <footer class="main-footer">
         <div class="float-right d-none d-sm-block">
-            <b>Version</b> 0.1.10
+            <b>Version</b> <?= $app_version ?>
         </div>
         <strong>Copyright &copy; 2023 <a href="https://ithillel.ua/">Комп'ютерна школа Hillel</a>.</strong> All rights
         reserved.
