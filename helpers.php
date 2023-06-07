@@ -1,5 +1,4 @@
 <?php
-include 'config.php';
 const APP_VERSION = '0.1.11';
 const USERNAME = 'Daniil Ivanov';
 const USERID = 1;
@@ -153,10 +152,10 @@ function renderTemplate($name, array $data = []) {
  * Connect to DB
  * @return mysqli|false
  */
-function connect_to_mysql_db(): mysqli|false {
+function connect_to_mysql_db(string $hostname, string $username, string $password, string $database): mysqli|false {
     mysqli_report(MYSQLI_REPORT_OFF);
 
-    $db = mysqli_connect($_ENV['hostname'], $_ENV['username'], $_ENV['password'], $_ENV['database']);
+    $db = mysqli_connect($hostname, $username, $password, $database);
     if (!$db) {
         die('Field to connect to DB');
     }
@@ -182,14 +181,11 @@ function get_file_extension($string): string {
  * Get all projects or projects for USERID
  *
  * @param object $db
- * @param bool $for_user
+ * @param int $author
  * @return array|bool
  */
-function get_projects(object $db, bool $for_user = false): array|bool {
-    $query = "SELECT p.*, COUNT(t.id) AS tcount FROM projects AS p LEFT JOIN tasks AS t ON p.id = t.project_id GROUP BY p.id";
-    if ($for_user) {
-        $query = sprintf("SELECT p.*, COUNT(t.id) AS tcount FROM projects AS p LEFT JOIN tasks AS t ON p.id = t.project_id WHERE p.user_id = '%d' GROUP BY p.id;", USERID);
-    }
+function get_projects(object $db, int $author): array|bool {
+    $query = sprintf("SELECT p.*, COUNT(t.id) AS tcount FROM projects AS p LEFT JOIN tasks AS t ON p.id = t.project_id WHERE p.user_id = '%d' GROUP BY p.id;", $author);
 
     $make_query = mysqli_query($db, $query);
     return $make_query ? mysqli_fetch_all($make_query, MYSQLI_ASSOC) : false;
@@ -248,14 +244,11 @@ function check_project_unique(array $projects, string $project_id): bool {
  * @param int|string|float|null $project_id
  * @return array|bool
  */
-function get_tasks(object $db, bool $for_user = false, int|string|float $project_id = null): array|bool {
-    $query = "SELECT * FROM tasks";
-    if ($for_user AND !is_null($project_id) AND is_numeric($project_id)) {
-        $query = sprintf("SELECT * FROM tasks WHERE user_id = '%d' AND project_id = '%u'", USERID, intval($project_id));
-    } elseif ($for_user) {
-        $query = sprintf("SELECT * FROM tasks WHERE user_id = '%d'", USERID);
-    } else {
-        return false;
+function get_tasks(object $db, int $author, int|string|float $project_id = null): array|bool {
+    $query = sprintf("SELECT * FROM tasks WHERE user_id = '%d'", $author);
+
+    if (!is_null($project_id) AND is_numeric($project_id)) {
+        $query .= sprintf(" AND project_id = '%u'", $project_id);
     }
 
     $make_query = mysqli_query($db, $query);
@@ -345,20 +338,20 @@ function check_add_task_from(array $data, array $projects): bool|array {
     if (empty($error)) return ['status' => 'success', 'data' => $file_name_to_upload]; else return ['status' => 'error', 'data' => $error];
 }
 
-function create_task(object $db, array $data, string $file_name): bool {
-    $query = '';
+function create_task(object $db, array $data, string $file_name, int $author): bool {
+    $query = 'INSERT INTO `tasks`(`project_id`, `user_id`, `name`, `description`, `deadline`';
     if (empty($data['FILE']['inputTaskFile']['name'])) {
-        $query = sprintf("INSERT INTO `tasks`(`project_id`, `user_id`, `name`, `description`, `deadline`) VALUES ('%s','%d','%s','%s','%s')",
+        $query .= sprintf(") VALUES ('%s','%d','%s','%s','%s')",
             $data['POST']['selectProject'],
-            USERID,
+            $author,
             $data['POST']['inputName'],
             $data['POST']['inputDescription'],
             $data['POST']['inputDate']
         );
     } else {
-        $query = sprintf("INSERT INTO `tasks`(`project_id`, `user_id`, `name`, `description`, `deadline`, `file`) VALUES ('%s','%d','%s','%s','%s','%s')",
+        $query = sprintf(", `file`) VALUES ('%s','%d','%s','%s','%s','%s')",
             $data['POST']['selectProject'],
-            USERID,
+            $author,
             $data['POST']['inputName'],
             $data['POST']['inputDescription'],
             $data['POST']['inputDate'],

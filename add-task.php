@@ -1,22 +1,23 @@
 <?php
 
 require 'helpers.php';
+$config = require 'config.php';
 
 /**
  * Connect to DB
  */
-$db = connect_to_mysql_db();
+$db = connect_to_mysql_db($config['hostname'], $config['username'], $config['password'], $config['database']);
 
 /**
  * Get projects for user USERID
  */
-$projects = get_projects($db, true);
+$projects = get_projects($db, USERID);
 $check_from = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $check_from = check_add_task_from(['POST' => $_POST, 'FILE' => $_FILES], $projects);
     if ($check_from['status'] == 'success') {
-        if (create_task($db, ['POST' => $_POST, 'FILE' => $_FILES], $check_from['data'])) {
+        if (create_task($db, ['POST' => $_POST, 'FILE' => $_FILES], $check_from['data'], USERID)) {
             setcookie('success-action', 'Успішне створення задачі', time() + 3);
             header('Location: /', true, 301);
         } else setcookie('error-action', 'При створенні задачі сталася помилка', time() + 3);
@@ -40,7 +41,7 @@ print renderTemplate('layout.php', [
     'page_title' => 'Створення задачі',
     'style' => [
         'css' => [
-            '<link rel="stylesheet" href="static/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">'
+            '/static/plugins/overlayScrollbars/css/OverlayScrollbars.min.css'
         ]
     ],
     'body_content' => $main_template
