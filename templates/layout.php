@@ -15,9 +15,9 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="static/css/adminlte.min.css">
 
-    <?php if ($style['css']): ?>
-        <?php foreach ($style['css'] as $key => $value): ?>
-            <?= $value ?>
+    <?php if (isset($style['css'])): ?>
+        <?php foreach ($style['css'] as $css): ?>
+            <link rel="stylesheet" href="<?= $css ?>">
         <?php endforeach; ?>
     <?php endif; ?>
 </head>
