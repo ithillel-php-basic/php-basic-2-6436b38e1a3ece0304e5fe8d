@@ -338,6 +338,15 @@ function check_add_task_from(array $data, array $projects): bool|array {
     if (empty($error)) return ['status' => 'success', 'data' => $file_name_to_upload]; else return ['status' => 'error', 'data' => $error];
 }
 
+/**
+ * Create new task
+ *
+ * @param object $db
+ * @param array $data
+ * @param string $file_name
+ * @param int $author
+ * @return bool
+ */
 function create_task(object $db, array $data, string $file_name, int $author): bool {
     $query = 'INSERT INTO `tasks`(`project_id`, `user_id`, `name`, `description`, `deadline`';
     if (empty($data['FILE']['inputTaskFile']['name'])) {
@@ -349,7 +358,7 @@ function create_task(object $db, array $data, string $file_name, int $author): b
             $data['POST']['inputDate']
         );
     } else {
-        $query = sprintf(", `file`) VALUES ('%s','%d','%s','%s','%s','%s')",
+        $query .= sprintf(", `file`) VALUES ('%s','%d','%s','%s','%s','%s')",
             $data['POST']['selectProject'],
             $author,
             $data['POST']['inputName'],
@@ -358,6 +367,95 @@ function create_task(object $db, array $data, string $file_name, int $author): b
             $file_name
         );
     }
+    $make_query = mysqli_query($db, $query);
+    return $make_query ? true : false;
+}
+
+/**
+ * Get all users
+ *
+ * @param object $db
+ * @return array|bool
+ */
+function get_users(object $db): array|bool {
+    $query = "SELECT * FROM `users`";
+
+    $make_query = mysqli_query($db, $query);
+    return $make_query ? mysqli_fetch_all($make_query, MYSQLI_ASSOC) : false;
+}
+
+/**
+ * Check unique user
+ *
+ * @param string $data
+ * @param array $users
+ * @return bool
+ */
+function check_user_unique(string $data, array $users): bool {
+    foreach ($users as $user) {
+        if ($user['email'] == $data) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+/**
+ * Validate register form
+ *
+ * @param object $db
+ * @param array $data
+ * @return array|string[]
+ */
+function check_register_form(object $db, array $data): array {
+    $users = get_users($db);
+    $error = [];
+
+    if (!empty($data['inputName'])) {
+        if (!preg_match('/^([a-zA-Zа-яА-Я\\s]{2,36})$/', $data['inputName'])) {
+            $error['inputName-error'] = 'Мінімальна довжина ім\'я 2 символи, або присутні неприпустимі символи';
+        }
+    }
+    if (!empty($data['inputEmail'])) {
+        if (!filter_var($data['inputEmail'], FILTER_VALIDATE_EMAIL)) {
+            $error['inputEmail-error'] = 'Некоректна електронна адреса';
+        }
+    }
+    if (!empty($data['inputPassword'])) {
+        if (!preg_match('/^(?=.{12,255}$)[a-zA-Zа-яА-Я0-9_.!?@]+$/', $data['inputPassword'])) {
+            $error['inputPassword-error'] = 'Мінімальна довжина паролю 12 символів, або присутні неприпустимі символи';
+        }
+    }
+    if (!empty($data['inputRepeatPassword'])) {
+        if ($data['inputRepeatPassword'] !== $data['inputPassword']) {
+            $error['inputRepeatPassword-error'] = 'Паролі не співпадають';
+        }
+    }
+    if (empty($data['checkTerms']) OR $data['checkTerms'] !== 'agree') {
+        $error['inputName-error'] = 'Треба прочитати і відмітити, якщо ви згодні з умовами';
+    }
+    if (check_user_unique($data['inputEmail'], $users)) {
+        $error['inputEmail-error'] = 'Користувач зі вказаною електронною адресою вже існує';
+    }
+
+    if (empty($error)) return ['status' => 'success']; else return ['status' => 'error', 'data' => $error];
+}
+
+
+/**
+ * Register new user
+ *
+ * @param object $db
+ * @param array $data
+ * @return bool
+ */
+function create_user(object $db, array $data): bool {
+    $query = "INSERT INTO `users`(`email`, `password`, `username`) VALUES ('%s','%s','%s')";
+
+    $password = password_hash($data['inputPassword'], PASSWORD_BCRYPT);
+    $query = sprintf($query, $data['inputEmail'], $password, $data['inputName']);
+
     $make_query = mysqli_query($db, $query);
     return $make_query ? true : false;
 }

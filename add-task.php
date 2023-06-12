@@ -12,8 +12,8 @@ $db = connect_to_mysql_db($config['hostname'], $config['username'], $config['pas
  * Get projects for user USERID
  */
 $projects = get_projects($db, USERID);
-$check_from = '';
 
+$check_from = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $check_from = check_add_task_from(['POST' => $_POST, 'FILE' => $_FILES], $projects);
     if ($check_from['status'] == 'success') {
@@ -39,10 +39,23 @@ $main_template = renderTemplate('main.php', [
 
 print renderTemplate('layout.php', [
     'page_title' => 'Створення задачі',
-    'style' => [
+    'links' => [
         'css' => [
+            '/static/plugins/ekko-lightbox/ekko-lightbox.css',
+            '/static/css/adminlte.min.css',
             '/static/plugins/overlayScrollbars/css/OverlayScrollbars.min.css'
+        ],
+        'js' => [
+            '/static/plugins/jquery/jquery.min.js',
+            '/static/plugins/jquery-ui/jquery-ui.min.js',
+            '/static/plugins/bootstrap/js/bootstrap.bundle.min.js',
+            '/static/plugins/ekko-lightbox/ekko-lightbox.min.js',
+            '/static/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js',
+            '/static/js/adminlte.min.js',
+            '/static/plugins/filterizr/jquery.filterizr.min.js',
+            '/static/js/kanban.js',
         ]
     ],
+    'body_options' => 'hold-transition sidebar-mini layout-fixed',
     'body_content' => $main_template
 ]);
