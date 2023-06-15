@@ -20,7 +20,7 @@
     <?= $body_content ?>
 
     <?php if (isset($links['js'])): ?>
-        <?php foreach ($links['js'] as $key => $js): ?>
+        <?php foreach ($links['js'] as $js): ?>
             <script type="application/javascript" src="<?= $js ?>"></script>
         <?php endforeach; ?>
     <?php endif; ?>

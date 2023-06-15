@@ -16,16 +16,21 @@ $projects = get_projects($db, USERID);
 $check_from = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $check_from = check_add_task_from(['POST' => $_POST, 'FILE' => $_FILES], $projects);
-    if ($check_from['status'] == 'success') {
+    if ($check_from['status']) {
         if (create_task($db, ['POST' => $_POST, 'FILE' => $_FILES], $check_from['data'], USERID)) {
             setcookie('success-action', 'Успішне створення задачі', time() + 3);
             header('Location: /', true, 301);
-        } else setcookie('error-action', 'При створенні задачі сталася помилка', time() + 3);
-    } else $_SESSION = $check_from['data'];
+        } else {
+            setcookie('error-action', 'При створенні задачі сталася помилка', time() + 3);
+        }
+    } else {
+        $check_from = $check_from['data'];
+    }
 }
 
 $task_add_template = renderTemplate('task-add.php', [
     'projects' => $projects,
+    'form_result' => $check_from
 ]);
 
 $main_template = renderTemplate('main.php', [

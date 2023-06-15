@@ -180,12 +180,12 @@ function get_file_extension($string): string {
 /**
  * Get all projects or projects for USERID
  *
- * @param object $db
+ * @param mysqli $db
  * @param int $author
  * @return array|bool
  */
-function get_projects(object $db, int $author): array|bool {
-    $query = sprintf("SELECT p.*, COUNT(t.id) AS tcount FROM projects AS p LEFT JOIN tasks AS t ON p.id = t.project_id WHERE p.user_id = '%d' GROUP BY p.id;", $author);
+function get_projects(mysqli $db, int $author): array|bool {
+    $query = sprintf("SELECT p.*, COUNT(t.id) AS tcount FROM projects AS p LEFT JOIN tasks AS t ON p.id = t.project_id WHERE p.user_id = '%d' GROUP BY p.id;", mysqli_real_escape_string($db, $author));
 
     $make_query = mysqli_query($db, $query);
     return $make_query ? mysqli_fetch_all($make_query, MYSQLI_ASSOC) : false;
@@ -239,16 +239,16 @@ function check_project_unique(array $projects, string $project_id): bool {
 /**
  * Get all tasks or tasks for USERID or for USERID with Project ID
  *
- * @param object $db
- * @param bool $for_user
+ * @param mysqli $db
+ * @param int $author
  * @param int|string|float|null $project_id
  * @return array|bool
  */
-function get_tasks(object $db, int $author, int|string|float $project_id = null): array|bool {
-    $query = sprintf("SELECT * FROM tasks WHERE user_id = '%d'", $author);
+function get_tasks(mysqli $db, int $author, int|string|float $project_id = null): array|bool {
+    $query = sprintf("SELECT * FROM tasks WHERE user_id = '%d'", mysqli_real_escape_string($db, $author));
 
     if (!is_null($project_id) AND is_numeric($project_id)) {
-        $query .= sprintf(" AND project_id = '%u'", $project_id);
+        $query .= sprintf(" AND project_id = '%u'", mysqli_real_escape_string($db, $project_id));
     }
 
     $make_query = mysqli_query($db, $query);
@@ -335,36 +335,41 @@ function check_add_task_from(array $data, array $projects): bool|array {
         } else $error['inputTaskFile-error'] = 'Виникла помилка при завантаженні файлу';
     }
 
-    if (empty($error)) return ['status' => 'success', 'data' => $file_name_to_upload]; else return ['status' => 'error', 'data' => $error];
+    if (empty($error)) {
+        return ['status' => true, 'data' => $file_name_to_upload];
+    } else {
+        return ['status' => false, 'data' => $error];
+    }
 }
 
 /**
  * Create new task
  *
- * @param object $db
+ * @param mysqli $db
  * @param array $data
  * @param string $file_name
  * @param int $author
  * @return bool
  */
-function create_task(object $db, array $data, string $file_name, int $author): bool {
-    $query = 'INSERT INTO `tasks`(`project_id`, `user_id`, `name`, `description`, `deadline`';
+function create_task(mysqli $db, array $data, string $file_name, int $author): bool {
+    $query = 'INSERT INTO `tasks`(`project_id`, `user_id`, `name`, `description`, `deadline`, `file`) VALUES ("%s","%s","%s","%s","%s","%s")';
     if (empty($data['FILE']['inputTaskFile']['name'])) {
-        $query .= sprintf(") VALUES ('%s','%d','%s','%s','%s')",
-            $data['POST']['selectProject'],
-            $author,
-            $data['POST']['inputName'],
-            $data['POST']['inputDescription'],
-            $data['POST']['inputDate']
+        $query = sprintf($query,
+            mysqli_real_escape_string($db, $data['POST']['selectProject']),
+            mysqli_real_escape_string($db, $author),
+            mysqli_real_escape_string($db, $data['POST']['inputName']),
+            mysqli_real_escape_string($db, $data['POST']['inputDescription']),
+            mysqli_real_escape_string($db, $data['POST']['inputDate']),
+            NULL
         );
     } else {
-        $query .= sprintf(", `file`) VALUES ('%s','%d','%s','%s','%s','%s')",
-            $data['POST']['selectProject'],
-            $author,
-            $data['POST']['inputName'],
-            $data['POST']['inputDescription'],
-            $data['POST']['inputDate'],
-            $file_name
+        $query = sprintf($query,
+            mysqli_real_escape_string($db, $data['POST']['selectProject']),
+            mysqli_real_escape_string($db, $author),
+            mysqli_real_escape_string($db, $data['POST']['inputName']),
+            mysqli_real_escape_string($db, $data['POST']['inputDescription']),
+            mysqli_real_escape_string($db, $data['POST']['inputDate']),
+            mysqli_real_escape_string($db, $file_name)
         );
     }
     $make_query = mysqli_query($db, $query);
@@ -374,42 +379,25 @@ function create_task(object $db, array $data, string $file_name, int $author): b
 /**
  * Get all users
  *
- * @param object $db
+ * @param mysqli $db
+ * @param string $email
  * @return array|bool
  */
-function get_users(object $db): array|bool {
-    $query = "SELECT * FROM `users`";
+function check_user_unique(mysqli $db, string $email): array|bool {
+    $query = "SELECT * FROM `users` WHERE `email` = " . mysqli_real_escape_string($db, $email);
 
     $make_query = mysqli_query($db, $query);
     return $make_query ? mysqli_fetch_all($make_query, MYSQLI_ASSOC) : false;
 }
 
 /**
- * Check unique user
- *
- * @param string $data
- * @param array $users
- * @return bool
- */
-function check_user_unique(string $data, array $users): bool {
-    foreach ($users as $user) {
-        if ($user['email'] == $data) {
-            return true;
-        }
-    }
-    return false;
-}
-
-
-/**
  * Validate register form
  *
- * @param object $db
+ * @param mysqli $db
  * @param array $data
  * @return array|string[]
  */
-function check_register_form(object $db, array $data): array {
-    $users = get_users($db);
+function check_register_form(mysqli $db, array $data): bool|array {
     $error = [];
 
     if (!empty($data['inputName'])) {
@@ -435,26 +423,30 @@ function check_register_form(object $db, array $data): array {
     if (empty($data['checkTerms']) OR $data['checkTerms'] !== 'agree') {
         $error['inputName-error'] = 'Треба прочитати і відмітити, якщо ви згодні з умовами';
     }
-    if (check_user_unique($data['inputEmail'], $users)) {
+    if (!empty(check_user_unique($db, $data['inputEmail']))) {
         $error['inputEmail-error'] = 'Користувач зі вказаною електронною адресою вже існує';
     }
 
-    if (empty($error)) return ['status' => 'success']; else return ['status' => 'error', 'data' => $error];
+    if (empty($error)) {
+        return true;
+    } else {
+        return $error;
+    }
 }
 
 
 /**
  * Register new user
  *
- * @param object $db
+ * @param mysqli $db
  * @param array $data
  * @return bool
  */
-function create_user(object $db, array $data): bool {
+function create_user(mysqli $db, array $data): bool {
     $query = "INSERT INTO `users`(`email`, `password`, `username`) VALUES ('%s','%s','%s')";
 
     $password = password_hash($data['inputPassword'], PASSWORD_BCRYPT);
-    $query = sprintf($query, $data['inputEmail'], $password, $data['inputName']);
+    $query = sprintf($query, mysqli_real_escape_string($db, $data['inputEmail']), mysqli_real_escape_string($db, $password), mysqli_real_escape_string($db, $data['inputName']));
 
     $make_query = mysqli_query($db, $query);
     return $make_query ? true : false;

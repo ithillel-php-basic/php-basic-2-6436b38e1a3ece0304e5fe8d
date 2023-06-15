@@ -6,17 +6,26 @@ $config = require 'config.php';
 $db = connect_to_mysql_db($config['hostname'], $config['username'], $config['password'], $config['database']);
 
 $check_form = '';
+$form_data = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $check_from = check_register_form($db, $_POST);
-    if ($check_from['status'] == 'success') {
+    $form_data = $_POST;
+    $check_from = check_register_form($db, $form_data);
+    if (!is_array($check_from)) {
         if (create_user($db, $_POST)) {
             setcookie('success-action', 'Успішна реєстрація!', time() + 3);
             header('Location: /', true, 301);
-        } else setcookie('error-action', 'При реєстрації виникла помилка', time() + 3);
-    } else $_SESSION = $check_from['data'];
+        } else {
+            setcookie('error-action', 'При реєстрації виникла помилка', time() + 3);
+        }
+    } else {
+        $check_form = $check_from;
+    }
 }
 
-$register_template = renderTemplate('register.php');
+$register_template = renderTemplate('register.php', [
+    'form_result' => $check_form,
+    'form_data' => $form_data
+]);
 
 print renderTemplate('layout.php', [
     'page_title' => 'Створення облікового запису',
@@ -30,7 +39,7 @@ print renderTemplate('layout.php', [
         'js' => [
             '/static/plugins/jquery/jquery.min.js',
             '/static/plugins/bootstrap/js/bootstrap.bundle.min.js',
-            '/static/dist/js/adminlte.min.js',
+            '/static/js/adminlte.min.js',
         ]
     ],
     'body_options' => 'hold-transition register-page',

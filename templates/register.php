@@ -8,49 +8,49 @@
 
             <form action="/register.php" method="post">
                 <div class="input-group mb-3">
-                    <input type="text" name="inputName" class="form-control<?= (isset($_SESSION['inputName-error']) ? ' is-invalid' : '') ?>" placeholder="Повне ім'я" <?= ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['inputName']) ? 'value="' . $_POST['inputName'] . '"' : '') ?> required>
+                    <input type="text" name="inputName" class="form-control<?= (!empty($form_result['inputName-error']) ? ' is-invalid' : '') ?>" placeholder="Повне ім'я" <?= (!empty($form_data['inputName']) ? 'value="' . $form_data['inputName'] . '"' : '') ?> required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
                         </div>
                     </div>
-                    <?= (isset($_SESSION['inputName-error']) ? '<span id="inputName-error" class="error invalid-feedback">' . $_SESSION['inputName-error'] . '</span>' : '') ?>
+                    <?= (!empty($form_result['inputName-error']) ? '<span id="inputName-error" class="error invalid-feedback">' . $form_result['inputName-error'] . '</span>' : '') ?>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="email" name="inputEmail" class="form-control<?= (isset($_SESSION['inputEmail-error']) ? ' is-invalid' : '') ?>" placeholder="Email" <?= ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['inputEmail']) ? 'value="' . $_POST['inputEmail'] . '"' : '') ?> required>
+                    <input type="email" name="inputEmail" class="form-control<?= (!empty($form_result['inputEmail-error']) ? ' is-invalid' : '') ?>" placeholder="Email" <?= (!empty($form_data['inputEmail']) ? 'value="' . $form_data['inputEmail'] . '"' : '') ?> required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
                         </div>
                     </div>
-                    <?= (isset($_SESSION['inputEmail-error']) ? '<span id="inputEmail-error" class="error invalid-feedback">' . $_SESSION['inputEmail-error'] . '</span>' : '') ?>
+                    <?= (!empty($form_result['inputEmail-error']) ? '<span id="inputEmail-error" class="error invalid-feedback">' . $form_result['inputEmail-error'] . '</span>' : '') ?>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" name="inputPassword" class="form-control<?= (isset($_SESSION['inputPassword-error']) ? ' is-invalid' : '') ?>" placeholder="Пароль" required>
+                    <input type="password" name="inputPassword" class="form-control<?= (!empty($form_result['inputPassword-error']) ? ' is-invalid' : '') ?>" placeholder="Пароль" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
-                    <?= (isset($_SESSION['inputPassword-error']) ? '<span id="inputPassword-error" class="error invalid-feedback">' . $_SESSION['inputPassword-error'] . '</span>' : '') ?>
+                    <?= (!empty($form_result['inputPassword-error']) ? '<span id="inputPassword-error" class="error invalid-feedback">' . $form_result['inputPassword-error'] . '</span>' : '') ?>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" name="inputRepeatPassword" class="form-control<?= (isset($_SESSION['inputRepeatPassword-error']) ? ' is-invalid' : '') ?>" placeholder="Повторіть пароль" required>
+                    <input type="password" name="inputRepeatPassword" class="form-control<?= (!empty($form_result['inputRepeatPassword-error']) ? ' is-invalid' : '') ?>" placeholder="Повторіть пароль" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
-                    <?= (isset($_SESSION['inputRepeatPassword-error']) ? '<span id="inputRepeatPassword-error" class="error invalid-feedback">' . $_SESSION['inputRepeatPassword-error'] . '</span>' : '') ?>
+                    <?= (!empty($form_result['inputRepeatPassword-error']) ? '<span id="inputRepeatPassword-error" class="error invalid-feedback">' . $form_result['inputRepeatPassword-error'] . '</span>' : '') ?>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="icheck-primary">
-                            <input class="<?= (isset($_SESSION['checkTerms-error']) ? ' is-invalid' : '') ?>" type="checkbox" id="agreeTerms" name="checkTerms" value="agree" required>
+                            <input class="<?= (!empty($form_result['checkTerms-error']) ? ' is-invalid' : '') ?>" type="checkbox" id="agreeTerms" name="checkTerms" value="agree" required>
                             <label for="agreeTerms">
                                 Я згоден(а) з <a href="#">умовами</a>
                             </label>
-                            <?= (isset($_SESSION['checkTerms-error']) ? '<span id="checkTerms-error" class="error invalid-feedback">' . $_SESSION['checkTerms-error'] . '</span>' : '') ?>
+                            <?= (!empty($form_result['checkTerms-error']) ? '<span id="checkTerms-error" class="error invalid-feedback">' . $form_result['checkTerms-error'] . '</span>' : '') ?>
                         </div>
                     </div>
                     <!-- /.col -->
