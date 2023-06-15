@@ -29,7 +29,6 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Основні</h3>
-
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-minus"></i>
@@ -39,23 +38,23 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="inputName">Назва задачі</label>
-                                <input type="text" id="inputName" name="inputName" class="form-control<?= (isset($_SESSION['inputName-error']) ? ' is-invalid' : '') ?>" required>
-                                <?= (isset($_SESSION['inputName-error']) ? '<span id="inputName-error" class="error invalid-feedback">' . $_SESSION['inputName-error'] . '</span>' : '') ?>
+                                <input type="text" id="inputName" name="inputName" class="form-control<?= (!empty($form_result['inputName-error']) ? ' is-invalid' : '') ?>" required>
+                                <?= (!empty($form_result['inputName-error']) ? '<span id="inputName-error" class="error invalid-feedback">' . $form_result['inputName-error'] . '</span>' : '') ?>
                             </div>
                             <div class="form-group">
                                 <label for="inputDescription">Опис задачі</label>
-                                <textarea id="inputDescription" name="inputDescription" class="form-control<?= (isset($_SESSION['inputDescription-error']) ? ' is-invalid' : '') ?>" rows="4"></textarea>
-                                <?= (isset($_SESSION['inputDescription-error']) ? '<span id="inputDescription-error" class="error invalid-feedback">' . $_SESSION['inputDescription-error'] . '</span>' : '') ?>
+                                <textarea id="inputDescription" name="inputDescription" class="form-control<?= (!empty($form_result['inputDescription-error']) ? ' is-invalid' : '') ?>" rows="4"></textarea>
+                                <?= (!empty($form_result['inputDescription-error']) ? '<span id="inputDescription-error" class="error invalid-feedback">' . $form_result['inputDescription-error'] . '</span>' : '') ?>
                             </div>
                             <div class="form-group">
                                 <label for="selectProject">Оберіть проект</label>
-                                <select class="form-control<?= (isset($_SESSION['selectProject-error']) ? ' is-invalid' : '') ?>" id="selectProject" name="selectProject" required>
+                                <select class="form-control<?= (!empty($form_result['selectProject-error']) ? ' is-invalid' : '') ?>" id="selectProject" name="selectProject" required>
                                     <option value="" disabled selected>Виберіть проект</option>
                                     <?php foreach ($projects as $key => $value): ?>
                                         <option value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <?= (isset($_SESSION['selectProject-error']) ? '<span id="selectProject-error" class="error invalid-feedback">' . $_SESSION['selectProject-error'] . '</span>' : '') ?>
+                                <?= (!empty($form_result['selectProject-error']) ? '<span id="selectProject-error" class="error invalid-feedback">' . $form_result['selectProject-error'] . '</span>' : '') ?>
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -76,13 +75,13 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="inputDate">Дата виконання</label>
-                                <input type="date" id="inputDate" name="inputDate" class="form-control<?= (isset($_SESSION['inputDate-error']) ? ' is-invalid' : '') ?>" value="<?= date('Y-m-d') ?>" min="<?= date('Y-m-d') ?>" required>
-                                <?= (isset($_SESSION['inputDate-error']) ? '<span id="inputDate-error" class="error invalid-feedback">' . $_SESSION['inputDate-error'] . '</span>' : '') ?>
+                                <input type="date" id="inputDate" name="inputDate" class="form-control<?= (!empty($form_result['inputDate-error']) ? ' is-invalid' : '') ?>" value="<?= date('Y-m-d') ?>" min="<?= date('Y-m-d') ?>" required>
+                                <?= (!empty($form_result['inputDate-error']) ? '<span id="inputDate-error" class="error invalid-feedback">' . $form_result['inputDate-error'] . '</span>' : '') ?>
                             </div>
                             <div class="form-group">
                                 <label for="inputTaskFile">Прикріпити файл</label>
-                                <input type="file" id="inputTaskFile" name="inputTaskFile" class="form-control<?= (isset($_SESSION['inputTaskFile-error']) ? ' is-invalid' : '') ?>">
-                                <?= (isset($_SESSION['inputTaskFile-error']) ? '<span id="inputTaskFile-error" class="error invalid-feedback">' . $_SESSION['inputTaskFile-error'] . '</span>' : '') ?>
+                                <input type="file" id="inputTaskFile" name="inputTaskFile" class="form-control<?= (!empty($form_result['inputTaskFile-error']) ? ' is-invalid' : '') ?>">
+                                <?= (!empty($form_result['inputTaskFile-error']) ? '<span id="inputTaskFile-error" class="error invalid-feedback">' . $form_result['inputTaskFile-error'] . '</span>' : '') ?>
                             </div>
                         </div>
                         <!-- /.card-body -->
